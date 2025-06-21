@@ -3,10 +3,12 @@ import { Navigate, useRoutes } from "react-router-dom";
 
 // layouts
 import DashboardLayout from "../layouts/dashboard";
+import AuthLayout from "../layouts/auth";
 
 // config
 import { DEFAULT_PATH } from "../config";
 import LoadingScreen from "../components/LoadingScreen";
+
 
 const Loadable = (Component) => (props) => {
   return (
@@ -19,6 +21,17 @@ const Loadable = (Component) => (props) => {
 export default function Router() {
   return useRoutes([
     {
+       path: "/auth",
+      element: <AuthLayout />,
+      children: [
+        { path: "login", element: <LoginPage /> },
+        { path: "register", element: <RegisterPage /> },
+        { path: "reset-password", element: <ResetPasswordPage /> },
+        { path: "new-password", element: <NewPasswordPage /> },
+        {path: "verify", element: <VerifyPage /> },
+      ],
+    },
+    {
       path: "/",
       element: <DashboardLayout />,
       children: [
@@ -26,6 +39,7 @@ export default function Router() {
         { path: "app", element: <GeneralApp /> },
         { path: "settings", element: <Settings /> },
         { path: "group", element: <GroupPage /> },
+          // { path: "conversation", element: <Conversation /> },
         { path: "call", element: <CallPage /> },
         {path: "profile", element: <Profilepage />},  
         { path: "404", element: <Page404 /> },
@@ -39,6 +53,11 @@ export default function Router() {
 const GeneralApp = Loadable(
   lazy(() => import("../pages/dashboard/GeneralApp")),
 );
+
+// const Conversation = Loadable(
+//   lazy(() => import("../pages/dashboard/Conversation")),
+// );
+
 const Settings = Loadable(
   lazy(() => import("../pages/dashboard/Settings")),
 );
@@ -47,4 +66,14 @@ const GroupPage= Loadable(lazy(()=>import("../pages/dashboard/Group")))
 const CallPage= Loadable(lazy(()=>import("../pages/dashboard/Call")))
 const Profilepage = Loadable(lazy(() => import("../pages/dashboard/Profile")));
 const Page404 = Loadable(lazy(() => import("../pages/Page404")));
+
+const LoginPage = Loadable(lazy(() => import("../pages/auth/Login")));
+const VerifyPage = Loadable(lazy(() => import("../pages/auth/Verify")));
+const RegisterPage = Loadable(lazy(() => import("../pages/auth/Register")));
+const ResetPasswordPage = Loadable(
+  lazy(() => import("../pages/auth/ResetPassword"))
+);
+const NewPasswordPage = Loadable(
+  lazy(() => import("../pages/auth/NewPassword"))
+);
 

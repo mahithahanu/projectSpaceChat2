@@ -1,22 +1,31 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch as useAppDispatch, useSelector as useAppSelector } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
-import { rootPersistConfig ,rootReducer} from "./rootReducer";
+import { rootPersistConfig, rootReducer } from "./rootReducer";
 
+// Create the persisted reducer
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+
+// Create the Redux store
 const store = configureStore({
-    reducer: persistReducer(rootPersistConfig,rootReducer),
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-            serializableCheck: false,
-            immutableCheck: false,
-        }),
-})
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
+});
 
-const persistor=persistStore(store);
+// Create the persistor
+const persistor = persistStore(store);
 
-const {dispatch} =store;
+// Export dispatch from store directly
+const { dispatch } = store;
 
-const useSelector=useAppSelector;
+// Custom hooks for use in components
+const useDispatch = useAppDispatch;
+const useSelector = useAppSelector;
 
-const useDispatch=()=>useAppDispatch();
-
-export {store,persistor,dispatch,useSelector,useDispatch}
+// Export everything
+export { store, persistor, dispatch, useSelector, useDispatch };
+// Export the store as default

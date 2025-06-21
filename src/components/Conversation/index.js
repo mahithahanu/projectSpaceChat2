@@ -6,11 +6,21 @@ import {
 import Header from './Header';
 import Footer from './Footer';
 import Message from './Message';
+import { useDispatch, useSelector } from 'react-redux';
+import CallDialog from '../../sections/dashboard/Audio/callDialog';
+import { ResetAudioCallQueue } from '../../redux/slices/audioCall';
 
 
 
 
 const Conversation = () => {
+
+    const dispatch = useDispatch();
+  const { call_queue } = useSelector((state) => state.audioCall);
+
+   const handleCloseCallDialog = () => {
+    dispatch(ResetAudioCallQueue());
+  };
 
   return (
     <Stack
@@ -31,6 +41,10 @@ const Conversation = () => {
 
       {/* Chat Footer */}
       <Footer/>
+
+       {call_queue.length > 0 && (
+        <CallDialog open={true} handleClose={handleCloseCallDialog} />
+      )}
       
     </Stack>
   );
