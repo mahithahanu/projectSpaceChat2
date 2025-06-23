@@ -19,14 +19,22 @@ import {
   Keyboard,
   Info,
 } from "phosphor-react";
+import { useSelector } from "react-redux";
+
 
 import { useTheme } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
 import ThemeDialog from "../../sections/settings/ThemeDialog";
 import Shortcuts from "../../sections/settings/Shortcuts";
+import SettingsImage from "../../assets/Images/settings.png";
+
 
 const Settings = () => {
   const theme = useTheme();
+
+  const { user } = useSelector((state) => state.app);
+  console.log(user);
+
 
   const [openTheme, setOpenTheme] = useState(false);
 
@@ -52,19 +60,19 @@ const Settings = () => {
       key: 0,
       icon: <Bell size={20} />,
       title: "Notifications",
-      onclick: () => {},
+      onclick: () => { },
     },
     {
       key: 1,
       icon: <Lock size={20} />,
       title: "Privacy",
-      onclick: () => {},
+      onclick: () => { },
     },
     {
       key: 2,
       icon: <Key size={20} />,
       title: "Security",
-      onclick: () => {},
+      onclick: () => { },
     },
     {
       key: 3,
@@ -76,13 +84,13 @@ const Settings = () => {
       key: 4,
       icon: <Image size={20} />,
       title: "Chat Wallpaper",
-      onclick: () => {},
+      onclick: () => { },
     },
     {
       key: 5,
       icon: <Note size={20} />,
       title: "Request Account Info",
-      onclick: () => {},
+      onclick: () => { },
     },
     {
       key: 6,
@@ -94,7 +102,7 @@ const Settings = () => {
       key: 7,
       icon: <Info size={20} />,
       title: "Help",
-      onclick: () => {},
+      onclick: () => { },
     },
   ];
 
@@ -116,7 +124,7 @@ const Settings = () => {
             boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
           }}
         >
-          
+
           <Stack p={4} spacing={5}>
             {/* Header */}
             <Stack direction="row" alignItems={"center"} spacing={3}>
@@ -134,7 +142,11 @@ const Settings = () => {
                 sx={{ height: 56, width: 56 }}
               />
               <Stack spacing={0.5}>
-                <Typography variant="article">{`${faker.name.firstName()} ${faker.name.lastName()}`}</Typography>
+                <Typography variant="article">
+                  {user?.name
+                    ? `${user.name}`
+                    : "User Name"}
+                </Typography>
                 <Typography variant="body2">{faker.random.words()}</Typography>
               </Stack>
             </Stack>
@@ -161,23 +173,39 @@ const Settings = () => {
           </Stack>
         </Box>
         {/* Right Pane */}
+        {/* Right Pane */}
         <Box
           sx={{
-            height: "100%",
-            width: "calc(100vw - 420px )",
+            height: "100vh",
+            width: "calc(100vw - 420px)",
             backgroundColor:
               theme.palette.mode === "light"
                 ? "#FFF"
                 : theme.palette.background.paper,
-            borderBottom: "6px solid #0162C4",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 4, // optional padding
           }}
-        ></Box>
+        >
+          <Box
+            component="img"
+            src={SettingsImage}
+            alt="Settings Illustration"
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
+
       </Stack>
       {openTheme && (
         <ThemeDialog open={openTheme} handleClose={handleCloseTheme} />
       )}
-      {openShortcuts && <Shortcuts open={openShortcuts} handleClose={handleCloseShortcuts} /> }
-      
+      {openShortcuts && <Shortcuts open={openShortcuts} handleClose={handleCloseShortcuts} />}
+
     </>
   );
 };

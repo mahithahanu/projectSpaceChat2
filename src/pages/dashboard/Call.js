@@ -16,10 +16,17 @@ import StyledInputBase from "../../components/Search/StyledInputBase";
 import { CallLogElement } from "../../components/CallElement";
 import { CallLogs } from "../../data";
 import StartCall from "../../sections/main/StartCall";
+import { useEffect } from "react";
+import axios from "axios";
+
 // import CreateGroup from "../../sections/dashboard/CreateGroup";
 
 const Call = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [callLogs, setCallLogs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -28,6 +35,30 @@ const Call = () => {
     setOpenDialog(true);
   }
   const theme = useTheme();
+
+  useEffect(() => {
+    const fetchCallLogs = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log(token);
+
+        const res = await axios.get("http://localhost:3001/user/get-call-logs", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.data.status === "success") {
+          setCallLogs(res.data.data); // from controller's response
+        }
+      } catch (err) {
+        console.error("Failed to fetch call logs:", err);
+      }
+    };
+
+    fetchCallLogs();
+  }, []);
+
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>
@@ -36,7 +67,7 @@ const Call = () => {
         <Box
           sx={{
             overflowY: "scroll",
-            scrollbarWidth: "none", 
+            scrollbarWidth: "none",
             height: "100vh",
             width: 320,
             backgroundColor: (theme) =>
@@ -63,6 +94,8 @@ const Call = () => {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Search>
             </Stack>
@@ -79,15 +112,21 @@ const Call = () => {
               </IconButton>
             </Stack>
             <Divider />
-            <Stack sx={{ flexGrow: 1, overflow: "scroll",scrollbarWidth: "none", height: "100%" }}>
+            <Stack sx={{ flexGrow: 1, overflow: "scroll", scrollbarWidth: "none", height: "100%" }}>
               <SimpleBarStyle timeout={500} clickOnTrack={false}>
                 <Stack spacing={2.4}>
-                
+
                   {/* Call logs */}
-                  {CallLogs.map((el)=>{
-                    return <CallLogElement {...el}  />
-                  })}
-                 
+                  {callLogs
+                    .filter((log) =>
+                      log.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                    .map((el, index) => (
+                      <CallLogElement key={index} {...el} />
+                    ))}
+
+
+
                   {/* <CallLogElement/> */}
                 </Stack>
               </SimpleBarStyle>
@@ -96,19 +135,19 @@ const Call = () => {
         </Box>
 
         {/* Right */}
-         <Box
-                  sx={{
-                    height: "100%",
-                    width: "calc(100vw - 420px )",
-                    backgroundColor:
-                      theme.palette.mode === "light"
-                        ? "#FFF"
-                        : theme.palette.background.paper,
-                    borderBottom: "6px solid #0162C4",
-                  }}
-                ></Box>
+        <Box
+          sx={{
+            height: "100%",
+            width: "calc(100vw - 420px )",
+            backgroundColor:
+              theme.palette.mode === "light"
+                ? "#FFF"
+                : theme.palette.background.paper,
+            borderBottom: "6px solid #0162C4",
+          }}
+        ></Box>
       </Stack>
-       {openDialog && (
+      {openDialog && (
         <StartCall open={openDialog} handleClose={handleCloseDialog} />
       )}
 

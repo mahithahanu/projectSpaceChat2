@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-// import { dispatch } from "../store";
 import axios from "axios";
-
 
 const initialState = {
   sidebar: {
@@ -12,9 +9,12 @@ const initialState = {
   users: [],
   friends: [],
   friendRequests: [],
-  chat_type:null,
-  room_id:null,
+  chat_type: null,
+  room_id: null,
+  selectedUser: null, // ✅ ADD THIS LINE
+  call_logs: [],
 };
+
 
 const slice = createSlice({
   name: "app",
@@ -41,24 +41,35 @@ const slice = createSlice({
       state.chat_type = "individual";
       state.room_id = action.payload.room_id;
     },
+    setSelectedUser(state, action) {
+      state.selectedUser = action.payload;
+    },
+    fetchCallLogs(state, action) {
+      state.call_logs = Array.isArray(action.payload.call_logs)
+        ? action.payload.call_logs
+        : []; // ✅ Safety check
+    },
   },
 });
 
-
 export default slice.reducer;
 
-export function ToggleSidebar(){
-    return async(dispatch)=>{
-        dispatch(slice.actions.toggleSidebar());
-    }
+// === ACTION CREATORS === //
+
+export function ToggleSidebar() {
+  return async (dispatch) => {
+    dispatch(slice.actions.toggleSidebar());
+  };
 }
 
-export function updateSidebarType(type){
-    return async(dispatch)=>{
-        dispatch(slice.actions.updateSidebarType({
-            type,
-        }))
-    }
+export function updateSidebarType(type) {
+  return async (dispatch) => {
+    dispatch(
+      slice.actions.updateSidebarType({
+        type,
+      })
+    );
+  };
 }
 
 export function FetchUsers() {
@@ -80,55 +91,66 @@ export function FetchUsers() {
   };
 }
 
-
 export function FetchFriends() {
   return async (dispatch, getState) => {
-    await axios
-      .get(
-        "http://localhost:3001/user/get-friends",
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getState().auth.token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        dispatch(slice.actions.updateFriends({ friends: response.data.data }));
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios.get("http://localhost:3001/user/get-friends", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
       });
+
+      dispatch(slice.actions.updateFriends({ friends: response.data.data }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 }
 
 export function FetchFriendRequests() {
   return async (dispatch, getState) => {
-    await axios
-      .get(
-        "http://localhost:3001/user/get-friend-requests",
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getState().auth.token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        dispatch(slice.actions.updateFriendRequests({ requests: response.data.data }));
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios.get("http://localhost:3001/user/get-friend-requests", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
       });
+
+      dispatch(slice.actions.updateFriendRequests({ requests: response.data.data }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 }
 
-export const SelectConversation = ({ room_id }) => {
+export const FetchCallLogs = () => {
   return async (dispatch, getState) => {
+    try {
+      const response = await axios.get("http://localhost:3001/user/get-call-logs", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      });
+
+      dispatch(slice.actions.fetchCallLogs({ call_logs: response.data.data }));
+    } catch (err) {
+      console.error(err);
+      dispatch(slice.actions.fetchCallLogs({ call_logs: [] }));
+    }
+  };
+};
+
+export const SelectConversation = ({ room_id }) => {
+  return async (dispatch) => {
     dispatch(slice.actions.selectConversation({ room_id }));
+  };
+};
+
+export const setSelectedUser = (user) => {
+  return async (dispatch) => {
+    dispatch(slice.actions.setSelectedUser(user));
   };
 };

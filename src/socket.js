@@ -1,11 +1,23 @@
-import io from "socket.io-client"; // Add this
+// socket.js
+import { io } from "socket.io-client";
 
-let socket;
+export let socket;
 
-const connectSocket = (user_id) => {
-  socket = io("http://localhost:3001", {
-    query: `user_id=${user_id}`,
+export const connectSocket = (user_id) => {
+  return new Promise((resolve, reject) => {
+    socket = io("http://localhost:3001", {
+      query: { user_id },
+      transports: ["websocket"],
+    });
+
+    socket.on("connect", () => {
+      console.log("✅ Socket connected:", socket.id);
+      resolve();  // 🔑 resolve when connected
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("❌ Socket connection error:", err);
+      reject(err);
+    });
   });
-} // Add this -- our server will run on port 4000, so we connect to it from here
-
-export {socket, connectSocket};
+};

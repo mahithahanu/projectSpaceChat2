@@ -102,6 +102,7 @@ export function LoginUser(formValues, navigate) {
           token: response.data.token,
           user_id: response.data.user_id,
         }));
+        window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("user_id", response.data.user_id);
         alert(response.data.message || "Login successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));

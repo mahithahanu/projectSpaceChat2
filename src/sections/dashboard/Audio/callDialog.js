@@ -3,12 +3,9 @@ import {
   Avatar,
   Button,
   Dialog,
-  DialogActions,
-  DialogContent,
   Slide,
   Stack,
 } from "@mui/material";
-import { Mic, Microphone, MicrophoneSlash, MicSlash } from "phosphor-react";
 import { ZegoExpressEngine } from "zego-express-engine-webrtc";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../../utils/axios";
@@ -22,7 +19,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const CallDialog = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const audioStreamRef = useRef(null);
-
   const [isMuted, setIsMuted] = useState(false);
 
   const { user } = useSelector((state) => state.app);
@@ -39,15 +35,48 @@ const CallDialog = ({ open, handleClose }) => {
 
   const zg = new ZegoExpressEngine(appID, server);
 
-  const handleDisconnect = () => {
+  const stopRingtone = () => {
+    const ringtone = document.getElementById("ringtone");
+    if (ringtone) {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      await axiosInstance.post(
+        "/user/end-call",
+        { id: call_details._id, type: "audio", verdict: "Ended" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to notify backend:", error);
+    }
+
+    stopRingtone();
     dispatch(ResetAudioCallQueue());
+
     socket?.off("audio_call_accepted");
     socket?.off("audio_call_denied");
     socket?.off("audio_call_missed");
-    zg.stopPublishingStream(streamID);
-    zg.stopPlayingStream(userID);
-    zg.destroyStream(audioStreamRef.current);
-    zg.logoutRoom(roomID);
+
+    try {
+      zg.stopPublishingStream(streamID);
+      zg.stopPlayingStream(userID);
+      if (audioStreamRef.current) {
+        zg.destroyStream(audioStreamRef.current);
+      }
+      zg.logoutRoom(roomID);
+    } catch (err) {
+      console.warn("Zego cleanup warning:", err);
+    }
+
     handleClose();
   };
 
@@ -61,135 +90,164 @@ const CallDialog = ({ open, handleClose }) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      socket.emit(
-        "audio_call_not_picked",
-        { to: streamID, from: userID },
-        () => {}
-      );
-    }, 30000);
+    let timer;
+    let statusInterval;
+    const ringtone = document.getElementById("ringtone");
 
-    socket.on("audio_call_missed", () => {
-      handleDisconnect();
-    });
+    const setupCall = async () => {
+      try {
+        statusInterval = setInterval(async () => {
+          try {
+            const res = await axiosInstance.get(`/user/get-call-status/${call_details._id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const backendStatus = res?.data?.status;
+            if (backendStatus === "Ongoing") {
+              if (ringtone?.paused) await ringtone.play();
+            }
+            if (backendStatus === "Ended") {
+              stopRingtone();
+              clearInterval(statusInterval);
+              handleDisconnect();
+            }
+          } catch (err) {
+            console.error("Error polling call status:", err);
+          }
+        }, 2000);
 
-    socket.on("audio_call_accepted", () => {
-      clearTimeout(timer);
-    });
+        socket.on("audio_call_missed", () => {
+          stopRingtone();
+          handleDisconnect();
+        });
+        socket.on("audio_call_accepted", () => {
+          clearTimeout(timer);
+          stopRingtone();
+        });
+        socket.on("audio_call_denied", () => {
+          stopRingtone();
+          handleDisconnect();
+        });
 
-    if (!incoming) {
-      socket.emit("start_audio_call", {
-        to: streamID,
-        from: userID,
-        roomID,
-      });
-    }
-
-    socket.on("audio_call_denied", () => {
-      handleDisconnect();
-    });
-
-    let this_token;
-    async function fetchToken() {
-      const response = await axiosInstance.post(
-        "/user/generate-zego-token",
-        {
-          userId: userID,
-          room_id: roomID,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+        if (!incoming) {
+          socket.emit("start_audio_call", { to: streamID, from: userID, roomID });
         }
-      );
-      this_token = response.data.token;
-    }
 
-    fetchToken();
+        const response = await axiosInstance.post(
+          "/user/generate-zego-token",
+          { userId: userID, room_id: roomID },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const this_token = response?.data?.token;
 
-    zg.checkSystemRequirements()
-      .then((result) => {
-        if (result.webRTC && result.microphone) {
-          zg.loginRoom(
+        if (!this_token || !roomID || !userID) return;
+
+        const requirements = await zg.checkSystemRequirements();
+        if (requirements.webRTC && requirements.microphone) {
+          await zg.loginRoom(
             roomID,
             this_token,
             { userID, userName },
             { userUpdate: true }
-          )
-            .then(async () => {
-              const localStream = await zg.createStream({
-                camera: { audio: true, video: false },
-              });
+          );
 
-              audioStreamRef.current = localStream;
-              const localAudio = document.getElementById("local-audio");
-              localAudio.srcObject = localStream;
+          const localStream = await zg.createStream({ audio: true });
+          audioStreamRef.current = localStream;
+          const localAudio = document.getElementById("local-audio");
+          localAudio.srcObject = localStream;
 
-              zg.startPublishingStream(streamID, localStream);
+          zg.startPublishingStream(streamID, localStream);
 
-              zg.on("roomUserUpdate", async (roomID, updateType, userList) => {
-                if (updateType !== "ADD") {
-                  handleDisconnect();
-                } else {
-                  const remoteStream = await zg.startPlayingStream(userID);
+          zg.on("roomUserUpdate", async (_, updateType, userList) => {
+            if (updateType === "DELETE") handleDisconnect();
+            else if (updateType === "ADD" && userList.length > 0) {
+              const remoteUserID = userList[0]?.userID;
+              if (remoteUserID && remoteUserID !== userID) {
+                try {
+                  const remoteStream = await zg.startPlayingStream(remoteUserID);
                   const remoteAudio = document.getElementById("remote-audio");
                   remoteAudio.srcObject = remoteStream;
-                  remoteAudio.play();
+                  await remoteAudio.play();
+                } catch (err) {
+                  console.error("Remote stream play failed:", err);
                 }
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+              }
+            }
+          });
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } catch (err) {
+        console.error("Zego setup error:", err);
+      }
+    };
+
+    setupCall();
 
     return () => {
       clearTimeout(timer);
+      clearInterval(statusInterval);
+      stopRingtone();
     };
   }, []);
 
   return (
     <Dialog
       open={open}
+      onClose={handleClose}
       TransitionComponent={Transition}
-      keepMounted
-      onClose={handleDisconnect}
-      aria-describedby="alert-dialog-slide-description"
+      fullWidth
+      maxWidth="xs"
+      BackdropProps={{
+        sx: {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          backdropFilter: "blur(3px)",
+        },
+      }}
+      PaperProps={{
+        sx: {
+          m: "auto",
+          textAlign: "center",
+          borderRadius: 3,
+          p: 4,
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 2000,
+        },
+      }}
     >
-      <DialogContent>
-        <Stack direction="row" spacing={6} justifyContent="center" p={2}>
-          <Stack alignItems="center">
-            <Avatar sx={{ height: 100, width: 100 }} />
-            <audio id="local-audio" controls={false} />
-          </Stack>
-          <Stack alignItems="center">
-            <Avatar sx={{ height: 100, width: 100 }} />
-            <audio id="remote-audio" controls={false} />
-          </Stack>
-        </Stack>
+      <audio id="ringtone" src="/audio/ringtone-126505.mp3" loop />
 
-        <Stack direction="row" justifyContent="center" spacing={2} mt={2}>
-          <Button
-            variant="outlined"
-            color={isMuted ? "warning" : "primary"}
-            startIcon={isMuted ? <MicrophoneSlash /> : <Microphone />}
-            onClick={handleToggleMute}
-          >
-            {isMuted ? "Unmute" : "Mute"}
+      <Avatar sx={{ height: 90, width: 90, margin: "0 auto" }}>
+        {userName?.charAt(0)?.toUpperCase() || "U"}
+      </Avatar>
+      <h3>{userName || "Unknown User"}</h3>
+      <p>{incoming ? "Incoming Call..." : "Calling..."}</p>
+
+      <Stack direction="row" justifyContent="center" spacing={2} mt={3}>
+        {incoming ? (
+          <>
+            <Button variant="contained" color="error" onClick={handleDisconnect}>
+              Decline
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => socket.emit("audio_call_accepted")}
+            >
+              Accept
+            </Button>
+          </>
+        ) : (
+          <Button variant="contained" color="error" onClick={handleDisconnect}>
+            End
           </Button>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleDisconnect} variant="contained" color="error">
-          End Call
-        </Button>
-      </DialogActions>
+        )}
+      </Stack>
     </Dialog>
   );
 };

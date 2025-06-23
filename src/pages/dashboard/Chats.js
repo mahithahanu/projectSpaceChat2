@@ -16,11 +16,14 @@ import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchDirectConversations, SetCurrentConversation } from "../../redux/slices/conversation";
 
+import { setSelectedUser } from "../../redux/slices/app";
+
 const user_id = window.localStorage.getItem("user_id");
 
 const Chats = () => {
     const theme = useTheme();
     const [OpenDialog, setOpenDialog] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch();
 
     const conversations = useSelector(
@@ -62,9 +65,9 @@ const Chats = () => {
                             }}>
                                 <Users />
                             </IconButton>
-                            <IconButton>
+                            {/* <IconButton>
                                 <CircleDashed />
-                            </IconButton>
+                            </IconButton> */}
                         </Stack>
                     </Stack>
                     <Stack sx={{ width: "100%" }}>
@@ -72,7 +75,9 @@ const Chats = () => {
                             <SearchIconWrapper>
                                 <MagnifyingGlass color="#709CE6" spacing={2} />
                             </SearchIconWrapper>
-                            <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
+                            <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)} />
                         </Search>
                     </Stack>
                     <Stack spacing={1}>
@@ -100,13 +105,35 @@ const Chats = () => {
                                 <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                                     All Chats
                                 </Typography>
-                                {conversations.filter((el) => !el.pinned).map((el) => {
-                                    return (
-                                        <div key={el.id} onClick={() => dispatch(SetCurrentConversation(el))}>
-                                            <ChatElement {...el} />
-                                        </div>
-                                    );
-                                })}
+                                {conversations
+                                    .filter((el) =>
+                                        el.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                    )
+                                    .filter((el) => !el.pinned)
+                                    .map((el) => {
+                                        return (
+                                            <div
+                                                key={el.id}
+                                                onClick={() => {
+                                                    dispatch(SetCurrentConversation(el));
+
+                                                    const selectedUser = {
+                                                        _id: el.user_id,
+                                                        name: el.name,
+                                                        about: el.about,
+                                                        online: el.online,
+                                                        img: el.img,
+                                                    };
+
+                                                    dispatch(setSelectedUser(selectedUser));
+                                                }}
+                                            >
+                                                <ChatElement {...el} />
+                                            </div>
+                                        );
+                                    })}
+
+
 
                             </Stack>
                         </SimpleBarStyle>

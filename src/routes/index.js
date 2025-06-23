@@ -41,7 +41,8 @@ export default function Router() {
         { path: "group", element: <GroupPage /> },
           // { path: "conversation", element: <Conversation /> },
         { path: "call", element: <CallPage /> },
-        {path: "profile", element: <Profilepage />},  
+        {path: "profile", element: <Profilepage />}, 
+        { path: "discussion/:id", element: <DiscussionDetails /> }, 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
       ],
@@ -76,4 +77,9 @@ const ResetPasswordPage = Loadable(
 const NewPasswordPage = Loadable(
   lazy(() => import("../pages/auth/NewPassword"))
 );
+
+const DiscussionDetails = Loadable(
+  lazy(() => import("../pages/dashboard/SeeMessagepage"))
+);
+
 

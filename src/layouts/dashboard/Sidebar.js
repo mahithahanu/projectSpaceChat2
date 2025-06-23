@@ -1,7 +1,7 @@
 import { Avatar, Box, Divider, IconButton, Stack, useTheme, Menu, MenuItem } from "@mui/material";
 import { Gear, Palette } from "phosphor-react";
 import React from "react";
-import Logo from "../../assets/Images/logo.ico";
+import Logo from "../../assets/Images/uconnect.jpg";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { useState } from "react";
 import { faker } from '@faker-js/faker';
@@ -76,9 +76,10 @@ const Sidebar = () => {
                 height: 64,
                 width: 64,
                 borderRadius: 1.5,
+                border:"1px solid blue"
               }}
             >
-              <img src={Logo} alt="chat app logo" />
+              <img src={Logo} alt="chat app logo" style={{borderRadius:"10px"}}/>
             </Box>
 
             <Stack
@@ -130,7 +131,7 @@ const Sidebar = () => {
                     borderRadius: 1.5,
                   }}
                 >
-                  <IconButton sx={{ width: "max-content", color: "#fff" }}>wqss
+                  <IconButton sx={{ width: "max-content", color: "#fff" }}>
                     <Gear />
                   </IconButton>
                 </Box>

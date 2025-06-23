@@ -16,7 +16,7 @@ import {
 } from "phosphor-react";
 import { useDispatch } from "react-redux";
 import { StartAudioCall } from "../redux/slices/audioCall";
-import { StartVideoCall } from "../redux/slices/videoCall";
+// import { StartVideoCall } from "../redux/slices/videoCall";
 // import { AWS_S3_REGION, S3_BUCKET_NAME } from "../config";
 
 const StyledChatBox = styled(Box)(({ theme }) => ({
@@ -105,7 +105,7 @@ const CallLogElement = ({ img, name, incoming, missed, online, id }) => {
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Phone />
 
-          <VideoCamera />
+          {/* <VideoCamera /> */}
         </Stack>
       </Stack>
     </StyledChatBox>
@@ -149,14 +149,14 @@ const CallElement = ({ img, name, id, handleClose }) => {
             <Phone style={{ color: theme.palette.primary.main }} />
           </IconButton>
 
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               dispatch(StartVideoCall(id));
               handleClose();
             }}
           >
             <VideoCamera style={{ color: theme.palette.primary.main }} />
-          </IconButton>
+          </IconButton> */}
         </Stack>
       </Stack>
     </StyledChatBox>
