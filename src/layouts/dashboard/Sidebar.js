@@ -13,13 +13,13 @@ import { useNavigate } from "react-router-dom";
 const getPath=(index)=>{
      switch (index) {
       case 0:
-       return "/app";
+       return "/app/dashboard";
      case 1:
-      return "/group";
+      return "/app/group";
     case 2:
-      return "/call";
+      return "/app/call";
     case 3:
-      return "/settings";
+      return "/app/settings";
 
       default:
         break;

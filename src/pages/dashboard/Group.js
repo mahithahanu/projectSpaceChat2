@@ -8,7 +8,7 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineEye } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 
 const Group=()=>{
@@ -22,6 +22,7 @@ const Group=()=>{
   const [dropdownOpen, setDropdownOpen] = useState(false);
    const [expandedMessages, setExpandedMessages] = useState({});
   const dropdownRef = useRef();
+  const theme=useTheme();
 
   const API = "http://localhost:3001/discussion/get-discussions";
 
@@ -119,8 +120,11 @@ const Group=()=>{
 
     return(
         <>
-        <Box sx={{width:"1500%", height: "calc(100vh - 10px)",overflowY:"auto"}}>
-            <div className={styles.container}>
+        <Box sx={{width:"1500%", height: "calc(100vh - 10px)",overflowY:"auto",scrollbarWidth:"none", }}>
+            <div className={styles.container} style={{background:
+      theme.palette.mode === "light"
+        ? theme.palette.common.white
+        : "#161C24",}}>
       <div className={styles.topBar}>
         <input
           type="text"
@@ -171,7 +175,12 @@ const Group=()=>{
 
           <div className={styles.content}>
           <div className={styles.headerLine}>
-  <span className={styles.author}>{item.author || "Anonymous"}</span>
+  <span className={styles.author}style={{color:
+      theme.palette.mode === "light"
+        ? "#1e293b"
+        : theme.palette.primary.main,
+
+  }}>{item.author || "Anonymous"}</span>
   <span className={styles.time}>{moment(item.time).fromNow()}</span>
 </div>
 

@@ -17,7 +17,7 @@ export default function Register() {
         <Stack direction="row" spacing={0.5}>
           <Typography variant="body2"> Already have an account? </Typography>
 
-          <Link component={RouterLink} to={"/auth/login"} variant="subtitle2">
+          <Link component={RouterLink} to={"/login/login"} variant="subtitle2">
             Sign in
           </Link>
         </Stack>

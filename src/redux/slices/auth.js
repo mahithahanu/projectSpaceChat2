@@ -96,7 +96,7 @@ export function LoginUser(formValues, navigate) {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         dispatch(slice.actions.logIn({
           isLoggedIn: true,
           token: response.data.token,
@@ -104,9 +104,10 @@ export function LoginUser(formValues, navigate) {
         }));
         window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("user_id", response.data.user_id);
+        window.localStorage.setItem("user_email", response.data.email);
         alert(response.data.message || "Login successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
-          navigate("/app");
+        navigate("/nxthome");
       })
       .catch((error) => {
         console.log(error);

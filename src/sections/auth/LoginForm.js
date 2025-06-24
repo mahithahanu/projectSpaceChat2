@@ -32,8 +32,8 @@ export default function AuthLoginForm() {
   });
 
   const defaultValues = {
-    email: "22A91A05B2@aec.edu.in",
-    password: "Mahi",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({
