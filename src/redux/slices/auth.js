@@ -41,6 +41,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
+
 export function NewPassword(formValues) {
   return async (dispatch, getState) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
@@ -104,7 +105,7 @@ export function LoginUser(formValues, navigate) {
         }));
         window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("user_id", response.data.user_id);
-        window.localStorage.setItem("user_email", response.data.email);
+        window.localStorage.setItem("user_email", response.data.email.toLowerCase());
         alert(response.data.message || "Login successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
         navigate("/nxthome");
@@ -146,13 +147,13 @@ export function RegisterUser(formValues) {
       })
       .finally(() => {
         if (!getState().auth.error) {
-          window.location.href = "/auth/verify";
+          window.location.href = "/login/verify";
         }
       });
   };
 }
 
-export function VerifyEmail(formValues) {
+export function VerifyEmail(formValues,navigate) {
   return async (dispatch, getState) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
@@ -169,6 +170,7 @@ export function VerifyEmail(formValues) {
           token: response.data.token,
         }));
         alert(response.data.message || "Email verified successfully!");
+          navigate("/login/login");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
       })
       .catch((error) => {

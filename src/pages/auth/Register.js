@@ -40,7 +40,7 @@ export default function Register() {
         .
       </Typography>
 
-     <AuthSocial />
+     {/* <AuthSocial /> */}
       </>
   );
 }

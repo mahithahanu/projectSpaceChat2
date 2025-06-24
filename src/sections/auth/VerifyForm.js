@@ -11,10 +11,13 @@ import { Eye, EyeSlash } from "phosphor-react";
 import RHFCodes from "../../components/hook-form/RHFCodes";
 import { useDispatch, useSelector } from "react-redux";
 import { VerifyEmail } from "../../redux/slices/auth";
+import { useNavigate } from "react-router-dom";
+
 
 // ----------------------------------------------------------------------
 
 export default function VerifyForm() {
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const { email } = useSelector((state) => state.auth);
   const VerifyCodeSchema = Yup.object().shape({
@@ -53,7 +56,8 @@ export default function VerifyForm() {
         VerifyEmail({
           email,
           otp: `${data.code1}${data.code2}${data.code3}${data.code4}${data.code5}${data.code6}`,
-        })
+        },
+       navigate)
       );
     } catch (error) {
       console.error(error);

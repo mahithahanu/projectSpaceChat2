@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 // sections
-import { Stack, Typography, Link } from "@mui/material";
+import { Stack, Typography, Link, Box } from "@mui/material";
 import AuthSocial from "../../sections/auth/AuthSocial";
 import Login from "../../sections/auth/LoginForm";
 
@@ -9,6 +9,7 @@ import Login from "../../sections/auth/LoginForm";
 export default function LoginPage() {
   return (
     <>
+    <Box sx={{border:'1px solid red'}} p={7}>
       <Stack spacing={2} sx={{ mb: 5, position: "relative" }}>
         <Typography variant="h4">Login to Uconnect</Typography>
 
@@ -26,6 +27,7 @@ export default function LoginPage() {
       </Stack>
       {/* Form */}
       <Login />
+      </Box>
 
       {/* <AuthSocial /> */}
     </>

@@ -31,7 +31,7 @@ export default function RegisterForm() {
   const defaultValues = {
     firstName: "",
     lastName: "",
-    email: "22A91A05B2@aec.edu.in",
+    email: "",
     password: "Mahi",
   };
 
@@ -96,22 +96,18 @@ export default function RegisterForm() {
 
       <LoadingButton
         fullWidth
-        color="inherit"
         size="large"
         type="submit"
         variant="contained"
-        // loading={isLoading}
         sx={{
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
+          bgcolor: "blue",
+          color: "white",
           "&:hover": {
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
+            bgcolor: "darkblue",
           },
         }}
       >
+
         Create Account
       </LoadingButton>
     </FormProvider>

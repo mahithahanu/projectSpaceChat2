@@ -52,7 +52,7 @@ export default function AuthLoginForm() {
     try {
       console.log(data);
       // submit data to backend
-      dispatch(LoginUser(data,navigate));
+      dispatch(LoginUser(data, navigate));
     } catch (error) {
       console.error(error);
       reset();
@@ -92,33 +92,29 @@ export default function AuthLoginForm() {
       </Stack>
 
       <Stack alignItems="flex-end" sx={{ my: 2 }}>
-        <Link 
-        component={RouterLink} to="/auth/reset-password" 
-        variant="body2" color="inherit"  underline="always">
+        <Link
+          component={RouterLink} to="/login/reset-password"
+          variant="body2" color="inherit" underline="always">
           Forgot password?
         </Link>
       </Stack>
 
       <LoadingButton
         fullWidth
-        color="inherit"
         size="large"
         type="submit"
         variant="contained"
-        // loading={isLoading}
         sx={{
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
+          bgcolor: "blue",
+          color: "white",
           "&:hover": {
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
+            bgcolor: "darkblue",
           },
         }}
       >
         Login
       </LoadingButton>
+
     </FormProvider>
   );
 }
