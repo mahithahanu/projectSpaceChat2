@@ -94,6 +94,7 @@ import { useParams, useLocation } from "react-router-dom";
 import styles from "./SeeMessagePage.module.css";
 import axios from "axios";
 import moment from "moment";
+import { Box } from "@mui/material";
 
 const SeeMessagePage = () => {
   const { id } = useParams();
@@ -157,6 +158,7 @@ const SeeMessagePage = () => {
   if (!discussion) return <p>Loading...</p>;
 
   return (
+    <Box sx={{width:"1500%"}}>
     <div className={styles.container}>
       <div className={styles.postBox}>
         <img
@@ -207,6 +209,7 @@ const SeeMessagePage = () => {
         </div>
       ))}
     </div>
+    </Box>
   );
 };
 

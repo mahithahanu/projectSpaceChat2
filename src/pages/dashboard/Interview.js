@@ -8,6 +8,7 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineEye } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
+import { Box } from "@mui/material";
 
 const Interviews = () => {
   const navigate = useNavigate();
@@ -124,6 +125,7 @@ const Interviews = () => {
   );
 
   return (
+    <Box sx={{width:"1500%",height:"100vh",overflowY: "Scroll"}}>
     <div className={styles.container}>
       <div className={styles.topBar}>
         <input
@@ -138,7 +140,7 @@ const Interviews = () => {
           <button className={styles.menuIcon} onClick={() => setDropdownOpen(!dropdownOpen)}>⋯</button>
           {dropdownOpen && (
             <div className={styles.dropdown}>
-              <div className={styles.dropdownItem} onClick={() => navigate("/")}>
+              <div className={styles.dropdownItem} onClick={() => navigate("/app/discussion-feed")}>
                 Discussions
               </div>
             </div>
@@ -253,6 +255,7 @@ const Interviews = () => {
         </div>
       ))}
     </div>
+    </Box>
   );
 };
 

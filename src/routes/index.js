@@ -70,6 +70,7 @@ export default function Router() {
         { path: "call", element: <CallPage /> },
         { path: "profile", element: <Profilepage /> },
         { path: "discussion/:id", element: <DiscussionDetails /> },
+        { path: "interviews", element: <Interviews /> },
         // { path: "discussion/category/:category", element: <DiscussionFeed /> },
 
 
@@ -127,6 +128,10 @@ const ClubsChatPage = Loadable(
 
 const SelectCommunity = Loadable(
   lazy(() => import("../pages/dashboard/selectDiscussion")) 
+);
+
+const Interviews = Loadable(
+  lazy(() => import("../pages/dashboard/Interview"))
 );
 
 

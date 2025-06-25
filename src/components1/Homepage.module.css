@@ -20,6 +20,7 @@
 .heroWrapper {
   display: flex;
   justify-content: space-between;
+  /* border: 1px solid black; */
   align-items: center;
   width: 90%;
   height: 100%;
@@ -49,6 +50,7 @@
   line-height: 1.2;
   margin-bottom: 20px;
   color: black;
+  /* border: 1px solid red; */
 }
 
 .highlight {
@@ -60,9 +62,13 @@
 }
 
 .description {
-  margin: 20px 0;
-  font-size: 22px;
+  /* margin: 20px 0; */
+  font-size: 18px;
   color: #444;
+  font-weight: 600;
+  /* border: 1px solid red; */
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .buttons {

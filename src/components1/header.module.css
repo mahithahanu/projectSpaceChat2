@@ -72,6 +72,25 @@
   font-weight: 500;
   white-space: nowrap;
   font-size: 20px;
+  position: relative;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px; /* Thickness of the underline */
+  width: 0;
+  background-color: #3B82F6;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
 }
 
 .right {

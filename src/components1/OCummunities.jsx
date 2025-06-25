@@ -11,7 +11,7 @@ const OCommunities = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [popupCommunity, setPopupCommunity] = useState(null);
-    const userEmail = localStorage.getItem('userEmail');
+    const userEmail = localStorage.getItem('user_email');
     const navigate = useNavigate();
 
     useEffect(() => {
