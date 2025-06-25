@@ -115,7 +115,7 @@ const Interviews = () => {
   };
 
   const handleSeeMessage = (post) => {
-    navigate(`/discussion/${post._id}`, {
+    navigate(`/app/discussion-feed/${post._id}`, {
       state: { discussion: post, source: "interviews" },
     });
   };

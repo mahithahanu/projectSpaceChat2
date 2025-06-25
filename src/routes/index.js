@@ -65,7 +65,7 @@ export default function Router() {
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
         { path: "dashboard", element: <GeneralApp /> },
         { path: "settings", element: <Settings /> },
-        { path: "discussion-feed", element: <GroupPage /> },
+        { path: "discussion-feed/:communityId", element: <GroupPage /> },
         { path: "selectcommunity", element: <SelectCommunity /> },
         { path: "call", element: <CallPage /> },
         { path: "profile", element: <Profilepage /> },

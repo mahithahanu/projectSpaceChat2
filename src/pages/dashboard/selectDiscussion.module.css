@@ -1,0 +1,33 @@
+.selectionPage {
+  text-align: center;
+  padding: 2rem;
+}
+
+.selectTitle {
+  font-size: 24px;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.buttonGrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.categoryBtn {
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 16px;
+}
+
+.categoryBtn:hover {
+  background-color: #2563eb;
+}

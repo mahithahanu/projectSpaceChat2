@@ -107,25 +107,21 @@ const Chats = () => {
                                 </Typography>
                                 {conversations
                                     .filter((el) =>
-                                        el.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                        (el.name || "").toLowerCase().includes(searchTerm.toLowerCase())
                                     )
-                                    .filter((el) => !el.pinned)
                                     .map((el) => {
                                         return (
                                             <div
-                                                key={el.id}
+                                                key={el.id || el._id}
                                                 onClick={() => {
                                                     dispatch(SetCurrentConversation(el));
-
-                                                    const selectedUser = {
+                                                    dispatch(setSelectedUser({
                                                         _id: el.user_id,
                                                         name: el.name,
                                                         about: el.about,
                                                         online: el.online,
                                                         img: el.img,
-                                                    };
-
-                                                    dispatch(setSelectedUser(selectedUser));
+                                                    }));
                                                 }}
                                             >
                                                 <ChatElement {...el} />

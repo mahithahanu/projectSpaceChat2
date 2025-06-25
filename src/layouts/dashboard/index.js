@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { connectSocket, socket } from "../../socket";
 import { SelectConversation } from "../../redux/slices/app";
 import { AddDirectConversation, UpdateDirectConversation } from "../../redux/slices/conversation";
+import { toast } from "react-toastify";
 
 const DashboardLayout = () => {
   const dispatch = useDispatch();
@@ -38,15 +39,15 @@ const DashboardLayout = () => {
 
       // ✅ Setup listeners
       socket.on("new-friend-request", (data) => {
-        alert(`${data.sender_name} has sent you a friend request.`);
+        toast.success("You got a friend request");
       });
 
       socket.on("request_accepted", (data) => {
-        alert(`${data.sender_name} accepted your friend request.`);
+       toast.success("request accepted");
       });
 
       socket.on("request_sent", (data) => {
-        alert(`${data.sender_name} has sent you a friend request.`);
+       toast.success("friend request sent successfully");
       });
 
       socket.on("start_chat",(data)=>{

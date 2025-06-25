@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-
-// ----------------------------------------------------------------------
+import { toast } from "react-toastify";
 
 const initialState = {
   isLoggedIn: false,
@@ -37,92 +36,89 @@ const slice = createSlice({
   },
 });
 
-// Reducer
 export default slice.reducer;
 
-// Actions
+// ------------------- ACTIONS ----------------------
 
 export function NewPassword(formValues) {
   return async (dispatch, getState) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     await axios
-      .post("/auth/reset-password", { ...formValues }, {
+      .post("/auth/reset-password", formValues, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response);
-        dispatch(slice.actions.logIn({
-          isLoggedIn: true,
-          token: response.data.token,
-        }));
-        alert(response.data.message || "Password reset successful!");
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
+        toast.success(response.data.message || "Password reset successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
       })
       .catch((error) => {
-        console.log(error);
-        alert(error.response?.data?.message || "Password reset failed!");
+        toast.error(error.response?.data?.message || "Password reset failed!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: true }));
       });
   };
 }
 
 export function ForgotPassword(formValues) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     await axios
-      .post("/auth/forgot-password", { ...formValues }, {
+      .post("/auth/forgot-password", formValues, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response);
-        alert(response.data.message || "OTP sent to email!");
+        toast.success(response.data.message || "OTP sent to email!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
       })
       .catch((error) => {
-        console.log(error);
-        alert(error.response?.data?.message || "Failed to send OTP.");
+        toast.error(error.response?.data?.message || "Failed to send OTP.");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: true }));
       });
   };
 }
 
 export function LoginUser(formValues, navigate) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     await axios
-      .post("/auth/login", { ...formValues }, {
+      .post("/auth/login", formValues, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response.data);
-        dispatch(slice.actions.logIn({
-          isLoggedIn: true,
-          token: response.data.token,
-          user_id: response.data.user_id,
-        }));
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+            user_id: response.data.user_id,
+          })
+        );
         window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("user_id", response.data.user_id);
         window.localStorage.setItem("user_email", response.data.email.toLowerCase());
-        alert(response.data.message || "Login successful!");
+        toast.success(response.data.message || "Login successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
         navigate("/nxthome");
       })
       .catch((error) => {
-        console.log(error);
-        alert(error.response?.data?.message || "Login failed!");
+        toast.error(error.response?.data?.message || "Login failed!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: true }));
       });
   };
 }
 
 export function LogoutUser() {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     window.localStorage.removeItem("user_id");
     dispatch(slice.actions.signOut());
-    alert("You have been logged out.");
+    toast.success("You have been logged out.");
   };
 }
 
@@ -131,18 +127,16 @@ export function RegisterUser(formValues) {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     await axios
-      .post("/auth/register", { ...formValues }, {
+      .post("/auth/register", formValues, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response);
         dispatch(slice.actions.updateRegisterEmail({ email: formValues.email }));
-        alert(response.data.message || "Registration successful. Please verify your email.");
+        toast.success(response.data.message || "Registration successful. Please verify your email.");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
       })
       .catch((error) => {
-        console.log(error);
-        alert(error.response?.data?.message || "Registration failed!");
+        toast.error(error.response?.data?.message || "Registration failed!");
         dispatch(slice.actions.updateIsLoading({ error: true, isLoading: false }));
       })
       .finally(() => {
@@ -153,29 +147,29 @@ export function RegisterUser(formValues) {
   };
 }
 
-export function VerifyEmail(formValues,navigate) {
-  return async (dispatch, getState) => {
+export function VerifyEmail(formValues, navigate) {
+  return async (dispatch) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     await axios
-      .post("/auth/verify", { ...formValues }, {
+      .post("/auth/verify", formValues, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
-        console.log(response);
         dispatch(slice.actions.updateRegisterEmail({ email: "" }));
         window.localStorage.setItem("user_id", response.data.user_id);
-        dispatch(slice.actions.logIn({
-          isLoggedIn: true,
-          token: response.data.token,
-        }));
-        alert(response.data.message || "Email verified successfully!");
-          navigate("/login/login");
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
+        toast.success(response.data.message || "Email verified successfully!");
+        navigate("/login/login");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
       })
       .catch((error) => {
-        console.log(error);
-        alert(error.response?.data?.message || "Verification failed!");
+        toast.error(error.response?.data?.message || "Verification failed!");
         dispatch(slice.actions.updateIsLoading({ error: true, isLoading: false }));
       });
   };
