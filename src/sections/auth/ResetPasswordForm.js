@@ -22,7 +22,7 @@ export default function AuthResetPasswordForm() {
 
   const methods = useForm({
     resolver: yupResolver(ResetPasswordSchema),
-    defaultValues: { email: "@gmail.com" },
+    defaultValues: { email: "@aec.edu.in" },
   });
 
   const { handleSubmit } = methods;
@@ -48,13 +48,11 @@ export default function AuthResetPasswordForm() {
         variant="contained"
         sx={{
           mt: 3,
-          bgcolor: "text.primary",
-          color: (theme) =>
-            theme.palette.mode === "light" ? "common.white" : "grey.800",
+          bgcolor: "blue",
+          color: "white",
           "&:hover": {
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
+            bgcolor: "#003366",
+            color: "white",
           },
         }}
       >

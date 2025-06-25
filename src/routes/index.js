@@ -35,6 +35,10 @@ export default function Router() {
           path: "/AllCommunities",
           element: <OCommunitiesPage />,
         },
+         {
+          path: "/AllClubs",
+          element: <ClubsChatPage />,
+        },
     {
       path: "/login",
       element: <AuthLayout />,
@@ -61,11 +65,13 @@ export default function Router() {
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
         { path: "dashboard", element: <GeneralApp /> },
         { path: "settings", element: <Settings /> },
-        { path: "group", element: <GroupPage /> },
-        // { path: "conversation", element: <Conversation /> },
+        { path: "discussion-feed", element: <GroupPage /> },
+        { path: "selectcommunity", element: <SelectCommunity /> },
         { path: "call", element: <CallPage /> },
         { path: "profile", element: <Profilepage /> },
         { path: "discussion/:id", element: <DiscussionDetails /> },
+        // { path: "discussion/category/:category", element: <DiscussionFeed /> },
+
 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
@@ -115,5 +121,12 @@ const OCommunitiesPage = Loadable(
   lazy(() => import("../components1/OCummunities")) 
 );
 
+const ClubsChatPage = Loadable(
+  lazy(() => import("../components1/ChatRoomPage")) 
+);
+
+const SelectCommunity = Loadable(
+  lazy(() => import("../pages/dashboard/selectDiscussion")) 
+);
 
 

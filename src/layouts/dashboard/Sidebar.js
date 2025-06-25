@@ -15,7 +15,7 @@ const getPath=(index)=>{
       case 0:
        return "/app/dashboard";
      case 1:
-      return "/app/group";
+      return "/app/selectcommunity";
     case 2:
       return "/app/call";
     case 3:

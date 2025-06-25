@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Events.module.css';
 
@@ -13,6 +13,7 @@ const Events = () => {
   const [errors, setErrors] = useState({});
   const [isRegistered, setIsRegistered] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate=useNavigate();
 
   useEffect(() => {
     const fetchClub = async () => {
@@ -94,7 +95,7 @@ const Events = () => {
             <h1>{club.landingHeading}</h1>
             <p>{club.landingDescription}</p>
             {isRegistered ? (
-              <button className={styles.registerBtn}>Chat</button>
+              <button className={styles.registerBtn}  onClick={() => navigate("/AllClubs")}>Chat</button>
             ) : (
               <button className={styles.registerBtn} onClick={() => setShowForm(true)}>Register</button>
             )}

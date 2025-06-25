@@ -1,7 +1,7 @@
 .container {
     padding: 1rem;
     font-family: sans-serif;
-    /* background-color: #ffffff; */
+    background-color: #ffffff;
     max-width: 1100px;
     margin: 0 auto;
     box-sizing: border-box;
@@ -18,6 +18,7 @@
     line-height: 1.5;
     margin: 2px 0 6px 0;
   }
+  
   
   
   .showMoreLess {
@@ -52,11 +53,7 @@
     gap: 8px;
     margin-top: 10px;
   }
-  
-  
-  
-  
-  
+
   .snippet {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -92,7 +89,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0; /* ensure no vertical gap */
+    gap: 0;
   }
   
   .bottomRow {
@@ -105,9 +102,9 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    font-size: 20px; /* smaller font */
+    font-size: 20px; 
     color: #64748b;
-    margin-bottom: 3px; /* tighter spacing */
+    margin-bottom: 3px; 
   }
   .headerLine {
     display: flex;
@@ -127,7 +124,7 @@
   
   .author {
     font-weight: bold;
-    /* color: #1e293b; */
+    color: #1e293b;
     font-size: 16px;
   }
   
@@ -142,17 +139,6 @@
     color: #475569;
     margin-left: 6px;
   }
-  
-  /* .showMoreLess {
-    color: #007bff;
-    cursor: pointer;
-    font-weight: 500;
-    display: inline-block;
-    margin-left: 4px;
-  } */
-  
-  
-  
   .timeWrapper {
     display: flex;
     flex-direction: column;
@@ -179,9 +165,6 @@
   .title a:hover {
     text-decoration: underline;
   }
-  
-  
-  
   .actions {
     display: flex;
     gap: 1rem;
@@ -262,8 +245,6 @@
   }
   
   .postIcon {
-    /* background-color:; */
-    /* color: white; */
     font-size: 1.25rem;
     padding: 0.4rem 0.8rem;
     border: none;
@@ -358,4 +339,55 @@
   
   .dropdownItem:hover {
     background-color: #f3f4f6;
+  }
+  .blueBackground {
+    background-color: #e0f0ff;
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .messageText {
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+  }
+  
+  .collapsedText {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* only show 4 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .selectionPage {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .selectTitle {
+    font-size: 24px;
+    margin-bottom: 1rem;
+  }
+  
+  .buttonGrid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .categoryBtn {
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .categoryBtn:hover {
+    background-color: #0056b3;
   }
