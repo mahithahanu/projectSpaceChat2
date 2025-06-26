@@ -43,11 +43,11 @@ export const Footer = () => {
             <p className={styles.creditText}>GET STARTED — NO STRINGS ATTACHED</p>
             <h2>Start using UConnect today.</h2>
             <form onSubmit={handleSubmit} className={styles.emailInput}>
-              <input 
-                type="email" 
-                placeholder="Your Email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
+              <input
+                type="email"
+                placeholder="Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <button type="submit">
@@ -67,10 +67,18 @@ export const Footer = () => {
             <p>Make the right data-driven decisions that move your business.</p>
           </div>
 
+          {/* <div className={styles.bottomBlock}>
+            // {/* <p>About</p>
+            // <p>Clubs</p>
+            // <p>Communities</p>
+             <Link to="/about" className={styles.footerLink}>About</Link>
+  <Link to="/clubs" className={styles.footerLink}>Clubs</Link>
+  <Link to="/communities" className={styles.footerLink}>Communities</Link>
+          </div> */}
           <div className={styles.bottomBlock}>
-            <p>About</p>
-            <p>Clubs</p>
-            <p>Communities</p>
+            <a href="#about" className={styles.footerLink}>About</a>
+            <a href="#clubs" className={styles.footerLink}>Clubs</a>
+            <a href="#communities" className={styles.footerLink}>Communities</a>
           </div>
 
           <div className={styles.bottomBlock}>

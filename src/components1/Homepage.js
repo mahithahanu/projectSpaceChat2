@@ -6,10 +6,11 @@ export const Homepage = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    const communitySection = document.getElementById("communities");
-    if (communitySection) {
-      communitySection.scrollIntoView({ behavior: "smooth" });
-    }
+    navigate('/app/dashboard');
+    // const communitySection = document.getElementById("communities");
+    // if (communitySection) {
+    //   communitySection.scrollIntoView({ behavior: "smooth" });
+    // }
   };
 
 

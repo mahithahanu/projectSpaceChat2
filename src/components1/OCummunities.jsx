@@ -154,7 +154,7 @@ const OCommunities = () => {
     const handleJoinConfirm = () => {
         if (!popupCommunity) return;
 
-        axios.post('http://localhost:5000/api/communities/join', {
+        axios.post('http://localhost:3001/communities/join', {
             email: userEmail,
             communityId: popupCommunity._id,
         }).then(() => {

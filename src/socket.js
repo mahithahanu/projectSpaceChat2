@@ -1,7 +1,9 @@
 // socket.js
 import { io } from "socket.io-client";
 
-export let socket;
+export let socket=null;
+
+export let clubSocket = null;
 
 export const connectSocket = (user_id) => {
   return new Promise((resolve, reject) => {
@@ -20,4 +22,18 @@ export const connectSocket = (user_id) => {
       reject(err);
     });
   });
+};
+
+export const connectClubSocket = () => {
+  if (!clubSocket) {
+    clubSocket = io("http://localhost:3001/club", {
+      transports: ["websocket"],
+    });
+
+    clubSocket.on("connect", () => {
+      console.log("✅ Club socket connected:", clubSocket.id);
+    });
+  }
+
+  return clubSocket;
 };

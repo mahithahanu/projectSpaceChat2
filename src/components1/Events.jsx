@@ -19,9 +19,11 @@ const Events = () => {
     const fetchClub = async () => {
       try {
         const res = await axios.get(`http://localhost:3001/clubs/${clubId}`);
+        // console.log(res.data);
         setClub(res.data);
         setGalleryImages(res.data.galleryImages || []);
-        const userEmail = localStorage.getItem('userEmail');
+        const userEmail = localStorage.getItem('user_email');
+        // console.log(userEmail);
         if (userEmail && res.data.registeredUsersData?.some(user => user.email === userEmail.toLowerCase())) {
           setIsRegistered(true);
         }

@@ -1,47 +1,66 @@
-import { Avatar, Box, Divider, IconButton, Stack, useTheme, Menu, MenuItem } from "@mui/material";
-import { Gear, Palette } from "phosphor-react";
-import React from "react";
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Stack,
+  useTheme,
+  Menu,
+  MenuItem
+} from "@mui/material";
+import { Gear } from "phosphor-react";
+import React, { useState } from "react";
 import Logo from "../../assets/Images/uconnect.jpg";
 import { Nav_Buttons, Profile_Menu } from "../../data";
-import { useState } from "react";
-import { faker } from '@faker-js/faker';
-import useSettings from "../../hooks/useSettings"
+import { faker } from "@faker-js/faker";
+import useSettings from "../../hooks/useSettings";
 import AntSwitch from "../../components/AntSwitch";
 import { useNavigate } from "react-router-dom";
 
-
-const getPath=(index)=>{
-     switch (index) {
-      case 0:
-       return "/app/dashboard";
-     case 1:
+const getPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/app/dashboard";
+    case 1:
       return "/app/selectcommunity";
     case 2:
       return "/app/call";
     case 3:
       return "/app/settings";
-
-      default:
-        break;
-     }
-}
+    default:
+      return "/";
+  }
+};
 
 const Sidebar = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const theme = useTheme();
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  // For opening the profile menu
+  const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
-   
-
   };
+
+  // For closing the profile menu
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // Handle menu item click (e.g., Logout)
+  const handleMenuItemClick = (el) => {
+    handleClose();
+
+    if (el.title === "Logout") {
+      // Clear auth if needed: localStorage.clear(); etc.
+      navigate(-1); // Navigate to the previous page
+    }
+
+    // You can handle other menu actions here if needed
   };
 
   return (
@@ -50,7 +69,7 @@ const Sidebar = () => {
         display: "flex",
         height: "100vh",
         width: "100%",
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.default
       }}
     >
       {/* Sidebar */}
@@ -59,7 +78,7 @@ const Sidebar = () => {
         sx={{
           width: "100px",
           backgroundColor: theme.palette.background.paper,
-          boxShadow: "0px 0px 2px rgba(0,0,0,0.25)",
+          boxShadow: "0px 0px 2px rgba(0,0,0,0.25)"
         }}
       >
         <Stack
@@ -76,10 +95,14 @@ const Sidebar = () => {
                 height: 64,
                 width: 64,
                 borderRadius: 1.5,
-                border:"1px solid blue"
+                border: "1px solid blue"
               }}
             >
-              <img src={Logo} alt="chat app logo" style={{borderRadius:"10px"}}/>
+              <img
+                src={Logo}
+                alt="chat app logo"
+                style={{ borderRadius: "10px" }}
+              />
             </Box>
 
             <Stack
@@ -95,27 +118,27 @@ const Sidebar = () => {
                     p={1}
                     sx={{
                       backgroundColor: theme.palette.primary.main,
-                      borderRadius: 1.5,
+                      borderRadius: 1.5
                     }}
                   >
-                    <IconButton
-                      sx={{ width: "max-content", color: "#fff" }}>
+                    <IconButton sx={{ width: "max-content", color: "#fff" }}>
                       {el.icon}
                     </IconButton>
                   </Box>
                 ) : (
                   <IconButton
                     key={el.index}
-                    onClick={() => {setSelected(el.index);
-                       navigate(getPath(el.index));
-                       console.log(el.index);
+                    onClick={() => {
+                      setSelected(el.index);
+                      navigate(getPath(el.index));
+                      console.log(el.index);
                     }}
                     sx={{
                       width: "max-content",
                       color:
                         theme.palette.mode === "light"
                           ? "#000"
-                          : theme.palette.text.primary,
+                          : theme.palette.text.primary
                     }}
                   >
                     {el.icon}
@@ -128,7 +151,7 @@ const Sidebar = () => {
                   p={1}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
-                    borderRadius: 1.5,
+                    borderRadius: 1.5
                   }}
                 >
                   <IconButton sx={{ width: "max-content", color: "#fff" }}>
@@ -137,7 +160,8 @@ const Sidebar = () => {
                 </Box>
               ) : (
                 <IconButton
-                  onClick={() => {setSelected(3);
+                  onClick={() => {
+                    setSelected(3);
                     navigate(getPath(3));
                   }}
                   sx={{
@@ -145,7 +169,7 @@ const Sidebar = () => {
                     color:
                       theme.palette.mode === "light"
                         ? "#000"
-                        : theme.palette.text.primary,
+                        : theme.palette.text.primary
                   }}
                 >
                   <Gear />
@@ -153,12 +177,17 @@ const Sidebar = () => {
               )}
             </Stack>
           </Stack>
+
           <Stack spacing={4}>
             <AntSwitch onChange={onToggleMode} defaultChecked />
-            <Avatar id="basic-button" aria-controls={open ? "basic-menu" : undefined}
+            <Avatar
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
-              onClick={handleClick} src={faker.image.avatar()} />
+              onClick={handleAvatarClick}
+              src={faker.image.avatar()}
+            />
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -166,27 +195,30 @@ const Sidebar = () => {
               onClose={handleClose}
               slotProps={{
                 list: {
-                  "aria-labelledby": "basic-button",
-                },
+                  "aria-labelledby": "basic-button"
+                }
               }}
               anchorOrigin={{
-                vertical:"bottom",
-                horizontal:"right",
+                vertical: "bottom",
+                horizontal: "right"
               }}
               transformOrigin={{
-                vertical:"bottom",
-                horizontal:"left",
-
+                vertical: "bottom",
+                horizontal: "left"
               }}
             >
               <Stack spacing={1} px={1}>
-                {Profile_Menu.map((el) => (
-                  <MenuItem onClick={handleClick}>
-                    <Stack sx={{ width: 100 }} direction="row" alignitems={"center"} justifyContent="space-between">
-
+                {Profile_Menu.map((el, index) => (
+                  <MenuItem key={index} onClick={() => handleMenuItemClick(el)}>
+                    <Stack
+                      sx={{ width: 100 }}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
                       <span>{el.title}</span>
                       {el.icon}
-                    </Stack>{" "}
+                    </Stack>
                   </MenuItem>
                 ))}
               </Stack>
@@ -194,10 +226,8 @@ const Sidebar = () => {
           </Stack>
         </Stack>
       </Box>
-      {/* <Box sx={{ flexGrow: 1, overflow: "auto" }}> */}
-      {/* </Box> */}
     </Box>
-  )
-}
+  );
+};
 
 export default Sidebar;

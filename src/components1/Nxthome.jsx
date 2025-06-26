@@ -10,10 +10,9 @@ import { FrequentQuestions } from '../components1/FrequentQuestions';
 import { Footer } from '../components1/Footer';
 import { ServiceFeatures } from '../components1/Service';
 
-
 const Nxthome=()=> {
   return (
-    <Box sx={{border:"1px solid red"}}>
+    <Box>
     <div>
       <Header />
 

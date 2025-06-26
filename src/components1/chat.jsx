@@ -1,77 +1,109 @@
-
 import React, { useEffect, useState, useRef } from 'react';
-import io from 'socket.io-client';
 import axios from 'axios';
 import './ChatStyles.css';
-
-const socket = io('http://localhost:3001/club');
+import { clubSocket, connectClubSocket } from "../socket";
 
 const Chat = ({ selectedClub }) => {
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState('');
   const chatBoxRef = useRef(null);
+  const clubRef = useRef(null);
 
   const userEmail = window.localStorage.getItem("user_email");
-const userName = userEmail ? userEmail.slice(0, -11) : "";
+  const userName = userEmail ? userEmail.slice(0, -11) : "";
 
-
+  // Connect socket and fetch messages when club changes
   useEffect(() => {
     if (!selectedClub) return;
 
-    socket.emit('joinRoom', selectedClub._id);
+    clubRef.current = selectedClub;
+
+    connectClubSocket(); // Ensure socket is connected
+
+    clubSocket.emit('joinRoom', selectedClub._id); // Join the room
 
     axios.get(`http://localhost:3001/clubschat/${selectedClub._id}`)
       .then(res => setMessages(res.data))
       .catch(err => console.error(err));
 
-    socket.on('receiveMessage', (msg) => {
-      setMessages(prev => [...prev, msg]);
-    });
-
-    return () => {
-      socket.off('receiveMessage');
-    };
   }, [selectedClub]);
 
-  useEffect(() => {
-    if (chatBoxRef.current) {
-      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+  // Listen to incoming messages (once)
+useEffect(() => {
+  const socket = connectClubSocket();
+
+  console.log("🧩 useEffect running, socket is:", socket);
+
+  const handleIncomingMessage = (msg) => {
+    console.log("📥 Socket received message:", msg);
+    if (msg.clubId === clubRef.current?._id) {
+      setMessages(prev => [...prev, msg]);
     }
+  };
+
+  if (socket) {
+    console.log("📡 Attaching 'receiveMessage' listener");
+    socket.on('receiveMessage', handleIncomingMessage);
+  } else {
+    console.warn("⚠️ socket is null, cannot attach listener");
+  }
+
+  return () => {
+    if (socket) {
+      socket.off('receiveMessage', handleIncomingMessage);
+    }
+  };
+}, []);
+
+ // listener runs once
+
+  // Auto scroll on new message
+  useEffect(() => {
+    chatBoxRef.current?.scrollTo({
+      top: chatBoxRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
   }, [messages]);
 
-  const sendMessage = () => {
-    if (newMsg.trim() === '') return;
+  const sendMessage = async () => {
+    if (newMsg.trim() === '' || !selectedClub) return;
 
-    socket.emit('sendMessage', {
-      clubId: selectedClub._id,
-      senderEmail: userEmail,
-      senderName: userName,
-      message: newMsg
-    });
+    try {
+      await axios.post('http://localhost:3001/send/send-message', {
+        clubId: selectedClub._id,
+        senderEmail: userEmail,
+        senderName: userName,
+        message: newMsg
+      });
 
-    setNewMsg('');
+      setNewMsg('');
+    } catch (error) {
+      console.error("❌ Failed to send message:", error);
+    }
   };
 
   if (!selectedClub) {
     return <div className="noClub">Select a club to start chatting</div>;
   }
 
-  // Helper function for date grouping
   const formatDate = (isoString) => {
     const msgDate = new Date(isoString);
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
 
-    const isToday = msgDate.toDateString() === today.toDateString();
-    const isYesterday = msgDate.toDateString() === yesterday.toDateString();
+    if (msgDate.toDateString() === today.toDateString()) return 'Today';
+    if (msgDate.toDateString() === yesterday.toDateString()) return 'Yesterday';
 
-    if (isToday) return 'Today';
-    if (isYesterday) return 'Yesterday';
     return msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
   let lastDate = null;
+
+  connectClubSocket().on('receiveMessage', (msg) => {
+  console.log("🔥 MANUAL Listener received message:", msg);
+});
+
 
   return (
     <div className="chatContainer">
@@ -92,10 +124,13 @@ const userName = userEmail ? userEmail.slice(0, -11) : "";
               )}
               <div className={msg.senderEmail === userEmail ? 'myMessage' : 'otherMessage'}>
                 <div className="msgSender">{msg.senderName}:</div>
-                <div className="msgText">{msg.message}</div>
-                <div className="msgTime">
-                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div className="msgContent">
+                  <span className="msgText">{msg.message}</span>
+                  <span className="msgTime">
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
+
               </div>
             </React.Fragment>
           );

@@ -5,7 +5,7 @@ import Login from "../../sections/auth/LoginForm";
 
 export default function LoginPage() {
   return (
-    <Grid container sx={{ minHeight: "100vh", backgroundColor: "#f7f9fc" ,border:"1px solid red"}}>
+    <Grid container sx={{ minHeight: "100vh", backgroundColor: "#f7f9fc"}}>
       {/* Illustration Left */}
       <Grid item xs={1} md={6}>
         <Box
