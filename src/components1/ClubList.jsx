@@ -1,19 +1,24 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './ChatStyles.css'; // Import shared CSS
+import './ChatStyles.css';
+import { useNavigate } from 'react-router-dom';
 
 const ClubList = ({ onSelectClub }) => {
     const [clubs, setClubs] = useState([]);
-    const userEmail =  window.localStorage.getItem("user_email");
+    const [showLogout, setShowLogout] = useState(false);
+    const userEmail = window.localStorage.getItem("user_email");
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:3001/clubs/by-user/email?email=${userEmail}`)
-
-
             .then(res => setClubs(res.data))
             .catch(err => console.error(err));
     }, [userEmail]);
+
+    const handleLogout = () => {
+        // window.localStorage.removeItem("user_email"); // Clear stored user data
+        navigate("/nxthome"); // Navigate to homepage
+    };
 
     return (
         <div className="clubList">
@@ -28,6 +33,21 @@ const ClubList = ({ onSelectClub }) => {
                     </li>
                 ))}
             </ul>
+
+            {/* Avatar and Logout Popup */}
+            <div className="bottomLeftAvatar">
+                <img
+                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                    alt="Contact Avatar"
+                    className="bottomLeftImage"
+                    onClick={() => setShowLogout(!showLogout)}
+                />
+                {showLogout && (
+                    <div className="logoutPopup" onClick={handleLogout}>
+                        Logout
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

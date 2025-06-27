@@ -221,6 +221,41 @@
   color: #666;
   font-size: 0.9rem;
 }
+.bottomLeftAvatar {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.bottomLeftImage {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+   cursor: pointer;
+}
+
+.logoutPopup {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.logoutPopup:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
 
 /* Responsive Styling */
 @media (max-width: 1024px) {

@@ -17,7 +17,7 @@
 .replyBox {
   display: flex;
   gap: 1rem;
-  background-color: #f9fafb;
+  background-color: rgb(229, 231, 233);
   padding: 1rem;
   margin-top: 1rem;
   border-left: 3px solid #5B96F7;
@@ -70,4 +70,38 @@
 .noReplies {
   color: #6b7280;
   margin-top: 1rem;
+}
+
+.darkContainer {
+  background-color: #0f172a;
+}
+
+.darkPostBox {
+  background-color: #1e293b;
+  box-shadow: none;
+}
+
+.darkReplyBox {
+  background-color: #1e293b;
+  border-left: 3px solid #3b82f6;
+}
+
+.darkUsername {
+  color: #93c5fd;
+}
+
+.darkTime {
+  color: #94a3b8;
+}
+
+.darkMessage {
+  color: #f1f5f9;
+}
+
+.darkReplyTitle {
+  color: #cbd5e1;
+}
+
+.darkNoReplies {
+  color: #94a3b8;
 }

@@ -123,6 +123,7 @@ const Chats = () => {
                                                         img: el.img,
                                                     }));
                                                 }}
+                                                 style={{ cursor: "pointer" }} 
                                             >
                                                 <ChatElement {...el} />
                                             </div>

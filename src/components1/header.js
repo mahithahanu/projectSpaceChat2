@@ -8,6 +8,10 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [userEmail, setUserEmail] = useState(localStorage.getItem('user_email'));
   const navigate = useNavigate();
+  const isAdmin = localStorage.getItem("is_admin");
+
+
+
 
   const toggleMenu = () => setMenuOpen(prev => !prev);
 
@@ -15,6 +19,7 @@ export const Header = () => {
     window.localStorage.removeItem('user_email');
     window.localStorage.removeItem('user_id');
     window.localStorage.removeItem('token');
+    window.localStorage.removeItem('is_admin');
     setUserEmail(null);
     setDropdownOpen(false);
     navigate('/login/login');
@@ -57,9 +62,34 @@ export const Header = () => {
               {dropdownOpen && (
                 <div className={styles.dropdown}>
                   <div className={styles.dropdownItem}>{userEmail}</div>
+
+                  {isAdmin && (
+                    <>
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          navigate("/nxthome/add-club");
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        Add Club
+                      </div>
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          navigate("/nxthome/add-event");
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        Add Event
+                      </div>
+                    </>
+                  )}
+
                   <button className={styles.dropdownItem} onClick={handleLogout}>Logout</button>
                 </div>
               )}
+
             </div>
           )}
 

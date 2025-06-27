@@ -103,6 +103,7 @@ export function LoginUser(formValues, navigate) {
         window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("user_id", response.data.user_id);
         window.localStorage.setItem("user_email", response.data.email.toLowerCase());
+        window.localStorage.setItem("is_admin", response.data.isAdmin);
         toast.success(response.data.message || "Login successful!");
         dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
         navigate("/nxthome");

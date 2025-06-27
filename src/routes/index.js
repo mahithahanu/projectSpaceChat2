@@ -28,17 +28,25 @@ export default function Router() {
       element: <Navigate to="/login/login" replace />,
     },
     {
-          path: "/events/:clubId",
-          element: <EventsPage />,
-        },
-          {
-          path: "/AllCommunities",
-          element: <OCommunitiesPage />,
-        },
-         {
-          path: "/AllClubs",
-          element: <ClubsChatPage />,
-        },
+      path: "/events/:clubId",
+      element: <EventsPage />,
+    },
+    {
+      path: "/AllCommunities",
+      element: <OCommunitiesPage />,
+    },
+    {
+      path: "/AllClubs",
+      element: <ClubsChatPage />,
+    },
+    {
+      path: "/admin/add-club",
+      element: <AddClub />,
+    },
+    {
+      path: "/admin/add-event",
+      element: <AddEvent />,
+    },
     {
       path: "/login",
       element: <AuthLayout />,
@@ -55,6 +63,8 @@ export default function Router() {
       element: <NxtHomeLayout />,
       children: [
         { path: "", element: <Nxthome /> },
+        { path: "add-club", element: <AddClub /> },
+        { path: "add-event", element: <AddEvent /> },
       ],
     },
 
@@ -72,7 +82,6 @@ export default function Router() {
         { path: "discussion/:id", element: <DiscussionDetails /> },
         { path: "interviews", element: <Interviews /> },
         // { path: "discussion/category/:category", element: <DiscussionFeed /> },
-
 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
@@ -115,23 +124,26 @@ const DiscussionDetails = Loadable(
 );
 
 const EventsPage = Loadable(
-  lazy(() => import("../components1/Events")) 
+  lazy(() => import("../components1/Events"))
 );
 
 const OCommunitiesPage = Loadable(
-  lazy(() => import("../components1/OCummunities")) 
+  lazy(() => import("../components1/OCummunities"))
 );
 
 const ClubsChatPage = Loadable(
-  lazy(() => import("../components1/ChatRoomPage")) 
+  lazy(() => import("../components1/ChatRoomPage"))
 );
 
 const SelectCommunity = Loadable(
-  lazy(() => import("../pages/dashboard/selectDiscussion")) 
+  lazy(() => import("../pages/dashboard/selectDiscussion"))
 );
 
 const Interviews = Loadable(
   lazy(() => import("../pages/dashboard/Interview"))
 );
+
+const AddClub = Loadable(lazy(() => import("../components1/adminClub")));
+const AddEvent = Loadable(lazy(() => import("../components1/adminEvent")));
 
 
