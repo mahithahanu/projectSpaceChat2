@@ -1,0 +1,300 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.chatMainContainer {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+}
+
+/* Left Sidebar */
+.clubListContainer {
+  width: 20%;
+  background-color: #3B82F6;
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Chat Area */
+.chatWindowContainer {
+  width: 80%;
+  background-color: #f3f4f6;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.clubList .title {
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.clubListItems {
+  list-style: none;
+  padding: 0;
+}
+
+.clubItem {
+  margin-bottom: 15px;
+}
+
+.clubButton {
+  width: 100%;
+  background-color: #ffffff;
+  color: #2563eb;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clubButton:hover {
+  background-color: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.clubImage {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2563eb;
+}
+
+/* Chat Area */
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chatHeader {
+  background-color: #3B82F6;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 12px 12px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.chatBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.chatBox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Messages */
+.myMessage,
+.otherMessage {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  word-break: break-word;
+  max-width: 70%;
+  width: fit-content;
+}
+
+.myMessage {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+  align-self: flex-end;
+  text-align: left;
+  margin-left: auto;
+  min-width: 180px;
+}
+
+.otherMessage {
+  background-color: #f5f5f5;
+  color: #111827;
+  align-self: flex-start;
+  text-align: left;
+  min-width: 180px;
+}
+
+/* Sender & Timestamp */
+.msgSender {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: black;
+}
+
+.msgContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.msgText {
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.msgTime {
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+
+/* Chat Input */
+.chatInput {
+  display: flex;
+  gap: 10px;
+}
+
+.chatInput input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chatInput button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.chatInput button:hover {
+  background-color: #1d4ed8;
+}
+
+/* No Club Selected */
+.noClub {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Date Header */
+.dateHeader {
+  text-align: center;
+  margin: 15px 0;
+  font-weight: bold;
+  color: #666;
+  font-size: 0.9rem;
+}
+.bottomLeftAvatar {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.bottomLeftImage {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+   cursor: pointer;
+}
+
+.logoutPopup {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.logoutPopup:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+/* Responsive Styling */
+@media (max-width: 1024px) {
+  .clubListContainer {
+    width: 30%;
+  }
+
+  .chatWindowContainer {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .chatMainContainer {
+    flex-direction: column;
+  }
+
+  .clubListContainer,
+  .chatWindowContainer {
+    width: 100%;
+    height: auto;
+  }
+
+  .chatBox {
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .clubList .title {
+    font-size: 22px;
+  }
+
+  .chatHeader {
+    font-size: 20px;
+    padding: 12px 15px;
+  }
+
+  .chatInput button {
+    padding: 10px 18px;
+  }
+}

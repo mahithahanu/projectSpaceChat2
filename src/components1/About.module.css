@@ -1,0 +1,380 @@
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-family: 'Inter', sans-serif;
+  background:#DCE7F1;
+  width: 100%;
+  min-height: 80vh;
+  padding: 60px 5%;
+  box-sizing: border-box;
+  gap: 0px; /* Reduce space between left and right */
+}
+
+.left {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.imageContainer {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  transform: translateX(-80px); 
+}
+
+.mainImg {
+  width: 100%;
+  height: auto;
+  border-radius: 30px;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.card {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 15px 22px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  z-index: 2;
+  line-height: 1.4;
+  width: 120px;
+}
+
+.card span {
+  font-size: 13px;
+  font-weight: 400;
+  display: block;
+  margin-top: 4px;
+  color: #555;
+}
+
+.cardTopLeft {
+  top: 155px;
+  left: 10px;
+  width: 100px;             /* Reduced from 120px */
+  padding: 10px 16px;       /* Smaller padding */
+  /* background-color: transparent; */
+  border-radius: 0px 0px 150px 0px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 120px;
+}
+
+.cardCenter {
+  top: 44%;
+  right: -10px;
+  width: 100px;             /* Reduced from 120px */
+  padding: 10px 16px;       /* Smaller padding */
+  transform: translateY(-50%);
+  border-radius: 0px 0px 150px 0px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 120px;
+}
+
+
+.cardBottomLeft {
+  bottom: 110px;         /* Moved slightly down (was 190px) */
+  left: 10px;            /* Moved slightly to the right (was 10px) */
+  width: 100px;          /* Smaller width */
+  padding: 10px 16px;    /* Smaller padding */
+  font-size: 14px;       /* Smaller font size */
+
+  border-radius: 0px 0px 150px 0px;
+  border-top-right-radius: 130px;
+  border-bottom-right-radius: 30px;
+}
+
+.card div:first-child {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.right {
+  flex: 1;
+  max-width: 600px;
+  min-width: 320px;
+  transform: translateX(-150px); /* Pulls text closer to image */
+}
+
+.right h2 {
+  font-size: 33px;
+  margin-bottom: 20px;
+  /* color: #fff; */
+}
+
+.highlight {
+  color: #5B96F7;
+}
+
+.right p {
+  font-size: 19px;
+  line-height: 1.8;
+  text-align: justify;
+  /* word-spacing: 0.px; */
+  /* color: #f3f3f3; */
+}
+@media (min-width: 1921px) {
+  .section {
+    padding: 80px 15%;
+    gap: 60px;
+  }
+
+  .right {
+    max-width: 650px;
+    transform: translateX(-100px); /* Reduced shift */
+  }
+
+  .right h2 {
+    font-size: 42px;
+  }
+
+  .right p {
+    font-size: 24px;
+    line-height: 2.2;
+  }
+
+  .imageContainer {
+    max-width: 550px;
+    transform: translateX(-50px); /* Reduce extreme left push */
+  }
+
+  .card {
+    width: 130px;
+    padding: 18px 24px;
+  }
+
+  .card div:first-child {
+    font-size: 20px;
+  }
+
+  .card span {
+    font-size: 14px;
+  }
+}
+@media (min-width: 1400px) and (max-width: 1500px) {
+  .section {
+    padding: 60px 10%;
+    gap: 80px; /* Adds space between image and text */
+  }
+
+  .right {
+        transform: translate(-30px, 50px); /* shifted right and slightly down */
+
+  }
+
+  .imageContainer {
+    transform: translateX(-40px); /* Slight left shift to balance gap */
+  }
+}
+@media (max-width: 1024px) {
+  .section {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    gap: 40px;
+    min-height: auto;
+  }
+
+  .left {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .imageContainer {
+    max-width: 300px;
+    width: 100%;
+    transform: none;
+  }
+
+  .mainImg {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .card {
+    position: absolute;
+    width: 90px;
+    padding: 8px 10px;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .card div:first-child {
+    font-size: 16px;
+  }
+
+  .card span {
+    font-size: 11px;
+  }
+
+  /* Adjusted card positions */
+  .cardTopLeft {
+    top: 135px;
+    left: -30px;
+  }
+
+  .cardCenter {
+    top: 55%;
+    right: -15px;
+    transform: translateY(-50%);
+  }
+
+  .cardBottomLeft {
+    bottom: 20px;
+    left: -30px;
+  }
+
+  .right {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-top: 0;
+    transform: none;
+    padding: 0 10px;
+  }
+
+  .right h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .right p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .section {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  /* .imageContainer {
+    max-width: 100%;
+    transform: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mainImg {
+    width: 90%;
+    height: auto;
+  } */
+
+  .right {
+    max-width: 100%;
+    transform: none;
+    text-align: center;
+  }
+
+  .right h2 {
+    font-size: 28px;
+  }
+
+  .right p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .card {
+    width: 90px;
+    padding: 8px 12px;
+  }
+
+  .card div:first-child {
+    font-size: 14px;
+  }
+
+  .card span {
+    font-size: 11px;
+  }
+
+  .cardTopLeft {
+    top: 120px;
+    left: 5px;
+  }
+
+  .cardCenter {
+    top: 44%;
+    right: 5px;
+  }
+
+  .cardBottomLeft {
+    bottom: 70px;
+    left: 15px;
+  }
+}
+@media (max-width: 320px) {
+  .section {
+    padding: 20px 10px;
+    gap: 20px;
+  }
+
+  .imageContainer {
+    max-width: 250px;
+    transform: none;
+  }
+
+  .card {
+    width: 60px;
+    padding: 4px 8px;
+  }
+
+  .card div:first-child {
+    font-size: 12px;
+  }
+
+  .card span {
+    font-size: 9px;
+  }
+
+  .cardTopLeft {
+    top: 80px;
+    left: -10px;
+  }
+
+  .cardCenter {
+    top: 50%;
+    right: -10px;
+  }
+
+  .cardBottomLeft {
+    bottom: 40px;
+    left: -10px;
+  }
+
+  .right h2 {
+    font-size: 20px;
+  }
+
+  .right p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 425px) {
+  .section {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .right {
+    text-align: center;
+  }
+}
