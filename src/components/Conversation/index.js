@@ -173,7 +173,7 @@ const Conversation = () => {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:3001/chat/send", {
+      const res = await axios.post("https://uconnect-gwif.onrender.com/chat/send", {
         from,
         to,
         message: text,

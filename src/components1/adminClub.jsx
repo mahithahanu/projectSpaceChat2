@@ -46,7 +46,7 @@ const AddClub = () => {
     };
 
     try {
-      await axios.post("http://localhost:3001/clubs/newclub", clubData);
+      await axios.post("https://uconnect-gwif.onrender.com/clubs/newclub", clubData);
       setSuccess("Club added successfully!");
       setFormData({
         name: "",

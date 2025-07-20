@@ -23,21 +23,17 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      // ✅ Prevent infinite reload by using a localStorage flag
       const alreadyReloaded = localStorage.getItem("alreadyReloaded");
 
       if (!alreadyReloaded) {
         localStorage.setItem("alreadyReloaded", "true");
         window.location.reload();
-        return; // important to prevent further execution in this render
+        return; 
       }
-
-      // ✅ Connect socket only if not connected
       if (!socket) {
         connectSocket(user_id);
       }
 
-      // ✅ Setup listeners
       socket.on("new-friend-request", (data) => {
         toast.success("You got a friend request");
       });
@@ -63,7 +59,6 @@ const DashboardLayout = () => {
     }
 
     return () => {
-      // ✅ Cleanup listeners to avoid memory leaks
       if (socket) {
         socket?.off("new-friend-request");
         socket?.off("request_accepted");

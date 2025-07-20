@@ -95,7 +95,7 @@ const ChatHeader = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3001/chat/delete-chat", {
+      const res = await axios.post("https://uconnect-gwif.onrender.com/chat/delete-chat", {
         conversation_id: conversationId,
       });
 
